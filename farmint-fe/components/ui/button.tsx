@@ -5,22 +5,22 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium button-smooth focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 active:animate-button-press",
   {
     variants: {
       variant: {
         default:
-          "bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800",
+          "bg-primary-600 text-white hover:bg-primary-700 hover:shadow-lg active:bg-primary-800",
         destructive:
-          "bg-error-500 text-white hover:bg-error-600 active:bg-error-700",
+          "bg-error-500 text-white hover:bg-error-600 hover:shadow-lg active:bg-error-700",
         outline:
-          "border border-border-medium bg-transparent hover:bg-background-tertiary hover:text-text-primary",
+          "border border-border-medium bg-transparent hover:bg-background-tertiary hover:text-text-primary hover:border-border-dark hover:shadow-md",
         secondary:
-          "bg-secondary-500 text-white hover:bg-secondary-600 active:bg-secondary-700",
-        ghost: "hover:bg-background-tertiary hover:text-text-primary",
-        link: "text-primary-400 underline-offset-4 hover:underline",
-        gradient: "bg-gradient-primary text-white hover:shadow-glow-sm transition-shadow duration-300",
-        accent: "bg-accent-500 text-white hover:bg-accent-600 active:bg-accent-700",
+          "bg-secondary-500 text-white hover:bg-secondary-600 hover:shadow-lg active:bg-secondary-700",
+        ghost: "hover:bg-background-tertiary hover:text-text-primary hover:shadow-sm",
+        link: "text-primary-400 underline-offset-4 hover:underline hover:text-primary-300",
+        gradient: "bg-gradient-primary text-white hover:shadow-glow-md hover:scale-105 transition-all duration-150",
+        accent: "bg-accent-500 text-white hover:bg-accent-600 hover:shadow-lg active:bg-accent-700",
       },
       size: {
         default: "h-9 px-4 py-2",

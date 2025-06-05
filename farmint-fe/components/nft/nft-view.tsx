@@ -32,23 +32,24 @@ export function NFTView({ nft }: NFTViewProps) {
   return (
     <div className="flex flex-col min-h-screen">
       <PageHeader title="" className="bg-transparent">
-        <div className="container flex items-center px-4">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="mr-auto"
+        <div className="flex items-center justify-between w-full px-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="button-smooth"
             onClick={() => router.back()}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          
+
           <div className="flex gap-2">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="button-smooth">
               <Heart className="h-5 w-5" />
             </Button>
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               size="icon"
+              className="button-smooth"
               onClick={() => {
                 // In a real app, this would copy the link to clipboard
                 toast.success("Link copied to clipboard");
@@ -60,7 +61,7 @@ export function NFTView({ nft }: NFTViewProps) {
         </div>
       </PageHeader>
       
-      <div className="animate-fade-in">
+      <div>
         <div className="relative aspect-square w-full">
           <Image
             src={nft.image}

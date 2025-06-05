@@ -54,24 +54,24 @@ export function BottomNavigation() {
           return (
             <button
               key={item.name}
-              className="flex flex-col items-center justify-center py-1 px-2 w-full"
+              className="flex flex-col items-center justify-center py-1 px-2 w-full button-smooth active:animate-button-press"
               onClick={() => router.push(item.href)}
             >
               <div
                 className={cn(
-                  "flex flex-col items-center justify-center w-12 h-12 rounded-lg transition-all duration-300",
+                  "flex flex-col items-center justify-center w-12 h-12 rounded-lg smooth-120",
                   isActive
-                    ? "bg-primary-600/20 text-primary-400"
-                    : "text-text-tertiary hover:text-text-secondary"
+                    ? "bg-primary-600/20 text-primary-400 shadow-glow-sm scale-105"
+                    : "text-text-tertiary hover:text-text-secondary hover:bg-white/5 hover:scale-105"
                 )}
               >
                 <item.icon
                   className={cn(
-                    "w-5 h-5 mb-1",
-                    isActive && "animate-pulse-slow"
+                    "w-5 h-5 mb-1 smooth-120",
+                    isActive && "animate-pulse-slow scale-110"
                   )}
                 />
-                <span className="text-body-xs font-medium">{item.name}</span>
+                <span className="text-body-xs font-medium smooth-120">{item.name}</span>
               </div>
             </button>
           );

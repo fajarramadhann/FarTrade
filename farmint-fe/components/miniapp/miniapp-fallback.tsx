@@ -29,7 +29,7 @@ export function MiniAppFallback({ children, error, isLoading }: MiniAppFallbackP
           <h2 className="text-xl font-semibold">Unable to Load MiniApp</h2>
           <p className="text-text-secondary">
             There was an issue loading the Farcaster MiniApp features. 
-            You can still use FarMint as a regular web app.
+            You can still use FarTrade as a regular web app.
           </p>
           <p className="text-sm text-text-tertiary">
             Error: {error}

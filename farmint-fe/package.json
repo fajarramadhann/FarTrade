@@ -9,11 +9,13 @@
     "check-ui-deps": "node scripts/check-ui-deps.js",
     "find-unused": "node scripts/find-unused-files.js",
     "remove-unused": "node scripts/remove-unused-files.js",
+    "performance": "node scripts/performance-check.js",
     "prebuild": "npm run clean",
     "build": "cross-env NEXT_TELEMETRY_DISABLED=1 next build",
     "build:safe": "npm run clean && cross-env NEXT_TELEMETRY_DISABLED=1 next build",
     "build:debug": "npm run check-env && npm run clean && cross-env NEXT_TELEMETRY_DISABLED=1 next build",
     "build:netlify": "npm install --legacy-peer-deps && npm run build",
+    "build:analyze": "npm run build && npm run performance",
     "start": "next start",
     "lint": "next lint"
   },

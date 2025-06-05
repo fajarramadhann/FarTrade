@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Heart, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LazyNFTImage } from "@/components/ui/lazy-image";
+import { CardSkeleton } from "@/components/ui/loading";
 import { useInView } from "react-intersection-observer";
 
 interface NFT {
@@ -26,12 +27,20 @@ export function NFTGrid({ nfts, onListNFT, itemsPerPage = 8 }: NFTGridProps) {
   const router = useRouter();
   const [displayedNFTs, setDisplayedNFTs] = useState<NFT[]>([]);
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const { ref, inView } = useInView({
     threshold: 0,
   });
 
   useEffect(() => {
-    setDisplayedNFTs(nfts.slice(0, page * itemsPerPage));
+    setIsLoading(true);
+    // Simulate loading delay for better UX
+    const timer = setTimeout(() => {
+      setDisplayedNFTs(nfts.slice(0, page * itemsPerPage));
+      setIsLoading(false);
+    }, page === 1 ? 500 : 200); // Longer delay for initial load
+
+    return () => clearTimeout(timer);
   }, [nfts, page, itemsPerPage]);
 
   useEffect(() => {
@@ -40,32 +49,41 @@ export function NFTGrid({ nfts, onListNFT, itemsPerPage = 8 }: NFTGridProps) {
     }
   }, [inView, displayedNFTs.length, nfts.length]);
   
-  if (nfts.length === 0) {
+  if (nfts.length === 0 && !isLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-10">
         <p className="text-text-tertiary text-body-md">No NFTs found</p>
       </div>
     );
   }
-  
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
-        {displayedNFTs.map((nft, index) => (
-          <div 
+        {/* Show skeletons while loading */}
+        {isLoading && page === 1 && (
+          <>
+            {Array.from({ length: itemsPerPage }).map((_, index) => (
+              <CardSkeleton key={`skeleton-${index}`} showAvatar={false} showImage lines={2} />
+            ))}
+          </>
+        )}
+
+        {/* Show actual NFTs */}
+        {!isLoading && displayedNFTs.map((nft, index) => (
+          <div
             key={nft.id}
-            className="border border-border-medium rounded-lg overflow-hidden bg-background-card hover:shadow-glow-sm hover:border-primary-500/30 transition-all duration-300 animate-slide-up"
-            style={{ animationDelay: `${index * 50}ms` }}
+            className="border border-border-medium rounded-lg overflow-hidden bg-background-card hover:shadow-glow-sm hover:border-primary-500/30 smooth-120 hover:scale-102"
           >
-            <div 
+            <div
               className="relative aspect-square w-full overflow-hidden cursor-pointer"
               onClick={() => router.push(`/nft/${nft.id}`)}
             >
-              <Image
+              <LazyNFTImage
                 src={nft.image}
                 alt={nft.name}
-                fill
-                className="object-cover transition-all duration-500 hover:scale-110"
+                className="object-cover smooth-120 hover:scale-110"
+                priority={index < 4} // Prioritize first 4 images
               />
               
               <button 
@@ -98,14 +116,14 @@ export function NFTGrid({ nfts, onListNFT, itemsPerPage = 8 }: NFTGridProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full flex items-center justify-center gap-2"
+                  className="w-full flex items-center justify-center gap-2 button-smooth hover:scale-105 hover:bg-primary-600/10 hover:border-primary-500 hover:text-primary-400 active:scale-95 transition-all duration-150"
                   onClick={(e) => {
                     e.stopPropagation();
                     onListNFT(nft.id);
                   }}
                 >
-                  <Tag className="h-4 w-4" />
-                  List for Sale
+                  <Tag className="h-4 w-4 smooth-120" />
+                  <span className="smooth-120">List for Sale</span>
                 </Button>
               )}
               
@@ -119,13 +137,22 @@ export function NFTGrid({ nfts, onListNFT, itemsPerPage = 8 }: NFTGridProps) {
         ))}
       </div>
 
-      {/* Loading indicator */}
-      {displayedNFTs.length < nfts.length && (
-        <div 
+      {/* Loading indicator for pagination */}
+      {!isLoading && displayedNFTs.length < nfts.length && (
+        <div
           ref={ref}
           className="flex justify-center py-4"
         >
           <div className="h-8 w-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
+        </div>
+      )}
+
+      {/* Loading more skeletons */}
+      {isLoading && page > 1 && (
+        <div className="grid grid-cols-2 gap-4">
+          {Array.from({ length: Math.min(itemsPerPage, nfts.length - displayedNFTs.length) }).map((_, index) => (
+            <CardSkeleton key={`skeleton-more-${index}`} showAvatar={false} showImage lines={2} />
+          ))}
         </div>
       )}
     </div>

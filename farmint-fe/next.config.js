@@ -4,10 +4,19 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  images: { unoptimized: true },
+  images: {
+    unoptimized: true,
+    formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
   experimental: {
     // Disable trace collection to avoid permission issues
     isrMemoryCacheSize: 0,
+    scrollRestoration: true,
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {

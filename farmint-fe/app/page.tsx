@@ -10,13 +10,13 @@ export default function Home() {
     <MiniAppLayout>
       <div className="flex flex-col min-h-screen">
         <MiniAppHeader
-          title="FarMint NFT Marketplace"
+          title="FarTrade NFT Marketplace"
           showShare
           showAdd
         />
-        <PageHeader title="NFT Marketplace" showWalletButton />
+        <PageHeader title="FarTrade NFT Marketplace" showWalletButton />
 
-        <div className="px-4 pb-6 flex flex-col gap-8 animate-fade-in">
+        <div className="px-4 pb-6 flex flex-col gap-8">
           <Featured />
           <TrendingCollections />
           <LiveAuctions />
