@@ -3,6 +3,7 @@
 import { Home, Search, Plus, BarChart3, User } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useMiniAppContext } from "@/components/miniapp/miniapp-provider";
 
 const navigationItems = [
   {
@@ -35,9 +36,17 @@ const navigationItems = [
 export function BottomNavigation() {
   const pathname = usePathname();
   const router = useRouter();
+  const { context, isInMiniApp } = useMiniAppContext();
+
+  // Apply safe area insets for miniapp
+  const safeAreaInsets = context?.client?.safeAreaInsets;
+  const bottomPadding = safeAreaInsets?.bottom || 0;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 glass-effect border-t border-border-medium z-50">
+    <div
+      className="fixed bottom-0 left-0 right-0 glass-effect border-t border-border-medium z-50"
+      style={{ paddingBottom: `${bottomPadding}px` }}
+    >
       <nav className="flex justify-around items-center py-2">
         {navigationItems.map((item) => {
           const isActive = pathname === item.href;

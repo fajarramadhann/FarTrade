@@ -1,0 +1,18 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjU0NDgsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHg2MWQwMEFENzYwNjhGOEQ0NzQwYzM1OEM4QzAzYUFFYjUxMGI1OTBEIn0",
+    "payload": "eyJkb21haW4iOiJmYXJtaW50LmFwcCJ9",
+    "signature": "MHg3NmRkOWVlMjE4OGEyMjliNzExZjUzOTkxYTc1NmEzMGZjNTA3NmE5OTU5OWJmOWFmYjYyMzAyZWQxMWQ2MWFmNTExYzlhYWVjNjQ3OWMzODcyMTI5MzA2YmJhYjdhMTE0MmRhMjA4MmNjNTM5MTJiY2MyMDRhMWFjZTY2NjE5OTFj"
+  },
+  "frame": {
+    "version": "1",
+    "name": "FarMint NFT Marketplace",
+    "iconUrl": "https://farmint.app/icon.png",
+    "homeUrl": "https://fartrade.vercel.app",
+    "imageUrl": "https://farmint.app/og-image.png",
+    "buttonTitle": "🎨 Launch FarMint",
+    "splashImageUrl": "https://farmint.app/splash.png",
+    "splashBackgroundColor": "#1a1a1a",
+    "webhookUrl": "https://fartrade.vercel.app/api/webhook"
+  }
+}

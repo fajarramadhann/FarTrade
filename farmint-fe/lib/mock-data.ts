@@ -110,41 +110,47 @@ export const popularNFTs = [
     name: "Digital Galaxy #56",
     image: "https://images.pexels.com/photos/3889704/pexels-photo-3889704.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     price: 2.4,
-    creator: "0x8B3...5F2e"
+    creator: "0x8B3...5F2e",
+    isListed: false
   },
   {
     id: 2,
     name: "Quantum Essence #18",
     image: "https://images.pexels.com/photos/7639459/pexels-photo-7639459.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     price: 1.8,
-    creator: "0x2D7...9E4a"
+    creator: "0x2D7...9E4a",
+    isListed: false
   },
   {
     id: 3,
     name: "Cyber Titan #92",
     image: "https://images.pexels.com/photos/7919366/pexels-photo-7919366.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     price: 3.5,
-    creator: "0xA1F...7B3c"
+    creator: "0xA1F...7B3c",
+    isListed: false
   },
   {
     id: 4,
     name: "Pixel Poetry #35",
     image: "https://images.pexels.com/photos/4100130/pexels-photo-4100130.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     price: 0.95,
-    creator: "0x6E2...8C1d"
+    creator: "0x6E2...8C1d",
+    isListed: false
   },
   {
     id: 5,
     name: "Digital Dream #23",
     image: "https://images.pexels.com/photos/3109816/pexels-photo-3109816.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     price: 1.2,
-    creator: "0x9B4...2F7e"
+    creator: "0x9B4...2F7e",
+    isListed: false
   },
   {
     id: 6,
     name: "Etheral Worlds #11",
     image: "https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     price: 2.8,
-    creator: "0x3C8...1A5f"
+    creator: "0x3C8...1A5f",
+    isListed: false
   }
 ];
