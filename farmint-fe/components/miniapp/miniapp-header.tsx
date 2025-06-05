@@ -28,7 +28,7 @@ export function MiniAppHeader({
 
   const handleShare = async () => {
     await actions.composeCast({
-      text: `Check out ${title} on FarMint! 🎨`,
+      text: `Check out ${title} on FarTrade! 🎨`,
       embeds: [window.location.href]
     });
   };

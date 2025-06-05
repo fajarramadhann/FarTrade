@@ -1,24 +1,32 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useMiniAppSimple } from './use-miniapp-simple';
 import type { MiniAppContext, MiniAppHookReturn } from '@/types/miniapp';
 
-// Dynamically import the SDK to avoid SSR issues
+// Dynamically import the SDK to avoid SSR issues and reduce bundle size
 let sdk: any = null;
+let sdkPromise: Promise<any> | null = null;
 
 const initializeSDK = async () => {
-  if (typeof window !== 'undefined' && !sdk) {
-    try {
-      const { sdk: frameSdk } = await import('@farcaster/frame-sdk');
-      sdk = frameSdk;
-      return frameSdk;
-    } catch (error) {
-      console.warn('Failed to load Farcaster Frame SDK:', error);
-      return null;
-    }
+  if (typeof window === 'undefined') return null;
+
+  if (sdk) return sdk;
+
+  if (!sdkPromise) {
+    sdkPromise = import('@farcaster/frame-sdk')
+      .then(({ sdk: frameSdk }) => {
+        sdk = frameSdk;
+        return frameSdk;
+      })
+      .catch((error) => {
+        console.warn('Failed to load Farcaster Frame SDK:', error);
+        sdkPromise = null; // Reset promise on error
+        return null;
+      });
   }
-  return sdk;
+
+  return sdkPromise;
 };
 
 // Re-export types for backward compatibility
@@ -35,14 +43,17 @@ export function useMiniApp(): MiniAppHookReturn {
   const simpleHook = useMiniAppSimple();
 
   useEffect(() => {
+    let mounted = true;
+
     async function initializeMiniApp() {
       try {
         // Initialize the SDK first
         const frameSdk = await initializeSDK();
 
+        if (!mounted) return;
+
         if (!frameSdk) {
           // If SDK fails to load, fall back to simple detection
-          console.warn('Falling back to simple miniapp detection');
           setUseSimple(true);
           setIsLoading(false);
           return;
@@ -50,26 +61,39 @@ export function useMiniApp(): MiniAppHookReturn {
 
         // Check if we're in a miniapp environment
         const inMiniApp = await frameSdk.isInMiniApp();
+
+        if (!mounted) return;
+
         setIsInMiniApp(inMiniApp);
 
         if (inMiniApp) {
           // Get context from the miniapp
           const miniAppContext = await frameSdk.context;
+
+          if (!mounted) return;
+
           setContext(miniAppContext);
 
           // Call ready to hide splash screen
           await frameSdk.actions.ready();
         }
       } catch (err) {
-        console.error('Failed to initialize miniapp:', err);
+        if (!mounted) return;
+
         setError(err instanceof Error ? err.message : 'Unknown error');
         setUseSimple(true);
       } finally {
-        setIsLoading(false);
+        if (mounted) {
+          setIsLoading(false);
+        }
       }
     }
 
     initializeMiniApp();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   // Return simple hook if SDK failed to load
@@ -77,88 +101,85 @@ export function useMiniApp(): MiniAppHookReturn {
     return simpleHook;
   }
 
-  const signIn = async (nonce: string) => {
-    if (!isInMiniApp || !sdk) {
-      throw new Error('Not in miniapp environment');
-    }
+  // Memoize action functions to prevent unnecessary re-renders
+  const actions = useMemo(() => ({
+    signIn: async (nonce: string) => {
+      if (!isInMiniApp || !sdk) {
+        throw new Error('Not in miniapp environment');
+      }
 
-    try {
-      return await sdk.actions.signIn({
-        nonce,
-        acceptAuthAddress: true
-      });
-    } catch (err) {
-      throw new Error(`Sign in failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
-    }
-  };
+      try {
+        return await sdk.actions.signIn({
+          nonce,
+          acceptAuthAddress: true
+        });
+      } catch (err) {
+        throw new Error(`Sign in failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      }
+    },
 
-  const addMiniApp = async () => {
-    if (!isInMiniApp || !sdk) {
-      throw new Error('Not in miniapp environment');
-    }
+    addMiniApp: async () => {
+      if (!isInMiniApp || !sdk) {
+        throw new Error('Not in miniapp environment');
+      }
 
-    try {
-      await sdk.actions.addMiniApp();
-    } catch (err) {
-      throw new Error(`Add miniapp failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
-    }
-  };
+      try {
+        await sdk.actions.addMiniApp();
+      } catch (err) {
+        throw new Error(`Add miniapp failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      }
+    },
 
-  const composeCast = async (options: {
-    text?: string;
-    embeds?: string[];
-    parent?: { type: 'cast'; hash: string };
-    channelKey?: string;
-  }) => {
-    if (!isInMiniApp || !sdk) {
-      throw new Error('Not in miniapp environment');
-    }
+    composeCast: async (options: {
+      text?: string;
+      embeds?: string[];
+      parent?: { type: 'cast'; hash: string };
+      channelKey?: string;
+    }) => {
+      if (!isInMiniApp || !sdk) {
+        throw new Error('Not in miniapp environment');
+      }
 
-    try {
-      return await sdk.actions.composeCast(options);
-    } catch (err) {
-      throw new Error(`Compose cast failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
-    }
-  };
+      try {
+        return await sdk.actions.composeCast(options);
+      } catch (err) {
+        throw new Error(`Compose cast failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      }
+    },
 
-  const openUrl = async (url: string) => {
-    if (!isInMiniApp || !sdk) {
-      window.open(url, '_blank');
-      return;
-    }
+    openUrl: async (url: string) => {
+      if (!isInMiniApp || !sdk) {
+        window.open(url, '_blank');
+        return;
+      }
 
-    try {
-      await sdk.actions.openUrl(url);
-    } catch (err) {
-      console.error('Failed to open URL:', err);
-      // Fallback to regular window.open
-      window.open(url, '_blank');
-    }
-  };
+      try {
+        await sdk.actions.openUrl(url);
+      } catch (err) {
+        console.error('Failed to open URL:', err);
+        // Fallback to regular window.open
+        window.open(url, '_blank');
+      }
+    },
 
-  const close = async () => {
-    if (!isInMiniApp || !sdk) {
-      return;
-    }
+    close: async () => {
+      if (!isInMiniApp || !sdk) {
+        return;
+      }
 
-    try {
-      await sdk.actions.close();
-    } catch (err) {
-      console.error('Failed to close miniapp:', err);
-    }
-  };
+      try {
+        await sdk.actions.close();
+      } catch (err) {
+        console.error('Failed to close miniapp:', err);
+      }
+    },
+  }), [isInMiniApp]);
 
-  return {
+  return useMemo(() => ({
     context,
     isInMiniApp,
     isLoading,
     error,
-    actions: {
-      signIn,
-      addMiniApp,
-      composeCast,
-      openUrl,
-      close,
-    },
-  };
+    actions,
+  }), [context, isInMiniApp, isLoading, error, actions]);
 }

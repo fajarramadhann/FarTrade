@@ -6,13 +6,13 @@
   },
   "frame": {
     "version": "1",
-    "name": "FarMint NFT Marketplace",
-    "iconUrl": "https://farmint.app/icon.png",
-    "homeUrl": "https://fartrade.vercel.app",
-    "imageUrl": "https://farmint.app/og-image.png",
-    "buttonTitle": "🎨 Launch FarMint",
-    "splashImageUrl": "https://farmint.app/splash.png",
+    "name": "FarTrade NFT Marketplace",
+    "iconUrl": "https://far-trade.vercel.app/fartrade-icon.png",
+    "homeUrl": "https://far-trade.vercel.app",
+    "imageUrl": "https://far-trade.vercel.app/fartrade-icon.png",
+    "buttonTitle": "🎨 Launch FarTrade",
+    "splashImageUrl": "https://far-trade.vercel.app/fartrade-icon.png",
     "splashBackgroundColor": "#1a1a1a",
-    "webhookUrl": "https://fartrade.vercel.app/api/webhook"
+    "webhookUrl": "https://far-trade.vercel.app/api/webhook"
   }
 }

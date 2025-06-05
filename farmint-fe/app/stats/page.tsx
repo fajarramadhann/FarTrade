@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { NFTGrid } from "@/components/discover/nft-grid";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { ListingModal } from "@/components/ui/modal";
 import { Search, Plus, Tag, Clock } from "lucide-react";
 import { toast } from "sonner";
 
@@ -167,138 +168,113 @@ export default function UserNFTsPage() {
         {/* NFT Grid */}
         <NFTGrid nfts={filteredNFTs} onListNFT={handleListNFT} />
         
-        {/* Enhanced Listing Modal */}
-        {selectedNFT && (
-          <div className="fixed inset-0 bg-background-primary/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-background-card border border-border-medium rounded-lg p-4 max-w-md w-full max-h-[90vh] overflow-y-auto">
-              <div className="flex items-center justify-between mb-3">
-                <h2 className="text-heading-h5 font-bold">List NFT for Sale</h2>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={() => {
-                    setSelectedNFT(null);
-                    setListingPrice("");
-                    setListingDuration("7");
-                    setRoyaltyPercentage("2.5");
-                  }}
-                >
-                  <span className="sr-only">Close</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-4 w-4"
-                  >
-                    <path d="M18 6 6 18" />
-                    <path d="m6 6 12 12" />
-                  </svg>
-                </Button>
-              </div>
-              
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-body-sm font-medium mb-1.5">Price (ETH)</label>
-                  <div className="relative">
-                    <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-tertiary" />
-                    <Input
-                      type="number"
-                      placeholder="0.00"
-                      value={listingPrice}
-                      onChange={(e) => setListingPrice(e.target.value)}
-                      className="pl-10 bg-background-secondary h-9"
-                      step="0.001"
-                      min="0"
-                    />
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-body-sm font-medium mb-1.5">Duration (Days)</label>
-                    <div className="relative">
-                      <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-tertiary" />
-                      <Input
-                        type="number"
-                        placeholder="7"
-                        value={listingDuration}
-                        onChange={(e) => setListingDuration(e.target.value)}
-                        className="pl-10 bg-background-secondary h-9"
-                        min="1"
-                        max="30"
-                      />
-                    </div>
-                    <p className="text-body-xs text-text-tertiary mt-1">1-30 days</p>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-body-sm font-medium mb-1.5">Royalty (%)</label>
-                    <div className="relative">
-                      <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-tertiary" />
-                      <Input
-                        type="number"
-                        placeholder="2.5"
-                        value={royaltyPercentage}
-                        onChange={(e) => setRoyaltyPercentage(e.target.value)}
-                        className="pl-10 bg-background-secondary h-9"
-                        step="0.1"
-                        min="0"
-                        max="10"
-                      />
-                    </div>
-                    <p className="text-body-xs text-text-tertiary mt-1">Max 10%</p>
-                  </div>
-                </div>
-                
-                <div className="pt-3 border-t border-border-medium">
-                  <div className="flex justify-between mb-1.5">
-                    <span className="text-body-sm text-text-tertiary">Platform Fee</span>
-                    <span className="text-body-sm">2.5%</span>
-                  </div>
-                  <div className="flex justify-between mb-1.5">
-                    <span className="text-body-sm text-text-tertiary">Royalty Fee</span>
-                    <span className="text-body-sm">{royaltyPercentage}%</span>
-                  </div>
-                  <div className="flex justify-between font-medium">
-                    <span className="text-body-sm">Total Fees</span>
-                    <span className="text-body-sm">{(2.5 + Number(royaltyPercentage)).toFixed(1)}%</span>
-                  </div>
-                </div>
-                
-                <div className="flex gap-2 pt-3">
-                  <Button
-                    variant="outline"
-                    className="flex-1 h-9"
-                    onClick={() => {
-                      setSelectedNFT(null);
-                      setListingPrice("");
-                      setListingDuration("7");
-                      setRoyaltyPercentage("2.5");
-                    }}
-                    disabled={isSubmitting}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="gradient"
-                    className="flex-1 h-9"
-                    onClick={handleConfirmListing}
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? "Listing..." : "List NFT"}
-                  </Button>
-                </div>
+        {/* Enhanced Animated Listing Modal */}
+        <ListingModal
+          isOpen={selectedNFT !== null}
+          onClose={() => {
+            setSelectedNFT(null);
+            setListingPrice("");
+            setListingDuration("7");
+            setRoyaltyPercentage("2.5");
+          }}
+          title="List NFT for Sale"
+        >
+          <div className="space-y-4">
+            <div>
+              <label className="block text-body-sm font-medium mb-1.5">Price (ETH)</label>
+              <div className="relative">
+                <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-tertiary smooth-120" />
+                <Input
+                  type="number"
+                  placeholder="0.00"
+                  value={listingPrice}
+                  onChange={(e) => setListingPrice(e.target.value)}
+                  className="pl-10 bg-background-secondary h-10 text-sm smooth-120 focus:scale-105 focus:shadow-glow-sm"
+                  step="0.001"
+                  min="0"
+                />
               </div>
             </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-body-sm font-medium mb-1.5">Duration (Days)</label>
+                <div className="relative">
+                  <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-tertiary smooth-120" />
+                  <Input
+                    type="number"
+                    placeholder="7"
+                    value={listingDuration}
+                    onChange={(e) => setListingDuration(e.target.value)}
+                    className="pl-10 bg-background-secondary h-9 smooth-120"
+                    min="1"
+                    max="30"
+                  />
+                </div>
+                <p className="text-body-xs text-text-tertiary mt-1">1-30 days</p>
+              </div>
+
+              <div>
+                <label className="block text-body-sm font-medium mb-1.5">Royalty (%)</label>
+                <div className="relative">
+                  <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-tertiary smooth-120" />
+                  <Input
+                    type="number"
+                    placeholder="2.5"
+                    value={royaltyPercentage}
+                    onChange={(e) => setRoyaltyPercentage(e.target.value)}
+                    className="pl-10 bg-background-secondary h-9 smooth-120"
+                    step="0.1"
+                    min="0"
+                    max="10"
+                  />
+                </div>
+                <p className="text-body-xs text-text-tertiary mt-1">Max 10%</p>
+              </div>
+            </div>
+
+            <div className="pt-3 border-t border-border-medium">
+              <div className="flex justify-between mb-1.5">
+                <span className="text-body-sm text-text-tertiary">Platform Fee</span>
+                <span className="text-body-sm">2.5%</span>
+              </div>
+              <div className="flex justify-between mb-1.5">
+                <span className="text-body-sm text-text-tertiary">Royalty Fee</span>
+                <span className="text-body-sm">{royaltyPercentage}%</span>
+              </div>
+              <div className="flex justify-between font-medium">
+                <span className="text-body-sm">Total Fees</span>
+                <span className="text-body-sm">{(2.5 + Number(royaltyPercentage)).toFixed(1)}%</span>
+              </div>
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <Button
+                variant="outline"
+                className="flex-1 h-10 text-sm button-smooth"
+                onClick={() => {
+                  setSelectedNFT(null);
+                  setListingPrice("");
+                  setListingDuration("7");
+                  setRoyaltyPercentage("2.5");
+                }}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="gradient"
+                className="flex-1 h-10 text-sm button-smooth hover:scale-105 hover:shadow-glow-lg"
+                onClick={handleConfirmListing}
+                disabled={isSubmitting}
+              >
+                <span className="smooth-120">
+                  {isSubmitting ? "Listing..." : "List NFT"}
+                </span>
+              </Button>
+            </div>
           </div>
-        )}
+        </ListingModal>
       </div>
     </div>
   );

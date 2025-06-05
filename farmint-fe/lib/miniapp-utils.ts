@@ -22,7 +22,7 @@ export function isMiniAppEnvironment(): boolean {
 
 export function getMiniAppUrl(path: string = ''): string {
   const baseUrl = process.env.NODE_ENV === 'production' 
-    ? 'https://farmint.app' 
+    ? 'https://far-trade.vercel.app' 
     : 'http://localhost:3000';
   
   return `${baseUrl}${path}`;
@@ -36,10 +36,10 @@ export function generateShareUrl(nftId?: string): string {
 
 export function generateCastText(nftName?: string): string {
   if (nftName) {
-    return `Check out "${nftName}" on FarMint! 🎨 The best place to mint, trade, and discover NFTs on Farcaster.`;
+    return `Check out "${nftName}" on FarTrade! 🎨 The best place to mint, trade, and discover NFTs on Farcaster.`;
   }
   
-  return `Discover amazing NFTs on FarMint! 🎨 Mint, trade, and collect on Farcaster's premier NFT marketplace.`;
+  return `Discover amazing NFTs on FarTrade! 🎨 Mint, trade, and collect on Farcaster's premier NFT marketplace.`;
 }
 
 export function formatFid(fid: number): string {

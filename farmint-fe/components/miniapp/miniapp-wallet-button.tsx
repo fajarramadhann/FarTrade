@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Wallet, User } from 'lucide-react';
 import { useMiniAppContext } from './miniapp-provider';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 interface MiniAppWalletButtonProps {
   className?: string;
@@ -56,7 +57,7 @@ export function MiniAppWalletButton({
         disabled
       >
         {user.pfpUrl ? (
-          <img 
+          <Image 
             src={user.pfpUrl} 
             alt={user.displayName || user.username || 'User'} 
             className="w-4 h-4 rounded-full"

@@ -1,16 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { MiniAppWalletButton } from "@/components/miniapp/miniapp-wallet-button";
 
 interface PageHeaderProps {
   title: string;
   showWalletButton?: boolean;
-  showBackButton?: boolean;
   className?: string;
   children?: React.ReactNode;
 }
@@ -18,7 +14,6 @@ interface PageHeaderProps {
 export function PageHeader({
   title,
   showWalletButton = false,
-  showBackButton = false,
   className,
   children,
 }: PageHeaderProps) {
@@ -34,46 +29,34 @@ export function PageHeader({
   }, []);
 
   return (
-    <motion.header
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+    <header
       className={cn(
         "sticky top-0 z-40 w-full transition-all duration-300",
-        scrolled 
-          ? "bg-background-primary/80 backdrop-blur-md border-b border-border-light py-3" 
+        scrolled
+          ? "bg-background-primary/80 backdrop-blur-md border-b border-border-light py-3"
           : "bg-transparent py-4",
         className
       )}
     >
       <div className="container flex items-center justify-between px-4">
-        <motion.h1 
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-          className="font-heading text-heading-h4 font-bold"
-        >
+        <h1 className="font-heading text-heading-h4 font-bold">
           {title}
-        </motion.h1>
-        
+        </h1>
+
         <div className="flex items-center gap-4">
           {children}
-          
+
           {showWalletButton && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: 0.2 }}
-            >
+            <div>
               <MiniAppWalletButton
                 variant="outline"
                 size="sm"
                 className="border-border-medium hover:bg-background-tertiary"
               />
-            </motion.div>
+            </div>
           )}
         </div>
       </div>
-    </motion.header>
+    </header>
   );
 }
