@@ -13,6 +13,7 @@
     "build": "cross-env NEXT_TELEMETRY_DISABLED=1 next build",
     "build:safe": "npm run clean && cross-env NEXT_TELEMETRY_DISABLED=1 next build",
     "build:debug": "npm run check-env && npm run clean && cross-env NEXT_TELEMETRY_DISABLED=1 next build",
+    "build:netlify": "npm install --legacy-peer-deps && npm run build",
     "start": "next start",
     "lint": "next lint"
   },
