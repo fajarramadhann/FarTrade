@@ -138,3 +138,40 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* MiniApp specific styles */
+.miniapp-container {
+  /* Ensure proper rendering in miniapp environment */
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Smooth transitions for miniapp interactions */
+.miniapp-transition {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Safe area handling for miniapps */
+.miniapp-safe-area {
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* Loading state for miniapp initialization */
+.miniapp-loading {
+  background: linear-gradient(90deg,
+    rgba(255, 255, 255, 0.1) 25%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: miniapp-shimmer 1.5s infinite;
+}
+
+@keyframes miniapp-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

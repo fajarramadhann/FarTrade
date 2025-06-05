@@ -5,6 +5,7 @@ import { Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { MiniAppWalletButton } from "@/components/miniapp/miniapp-wallet-button";
 
 interface PageHeaderProps {
   title: string;
@@ -64,14 +65,11 @@ export function PageHeader({
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, delay: 0.2 }}
             >
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="flex items-center gap-2 border-border-medium hover:bg-background-tertiary"
-              >
-                <Wallet className="w-4 h-4" />
-                <span>Connect Wallet</span>
-              </Button>
+              <MiniAppWalletButton
+                variant="outline"
+                size="sm"
+                className="border-border-medium hover:bg-background-tertiary"
+              />
             </motion.div>
           )}
         </div>
