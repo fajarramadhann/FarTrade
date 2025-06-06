@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { trendingCollections } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, TrendingUp } from "lucide-react";
+import { toast } from "sonner";
 
 export function TrendingCollections() {
   const router = useRouter();
@@ -55,19 +56,19 @@ export function TrendingCollections() {
                   <h3 className="font-heading text-heading-h6 font-semibold truncate">{collection.name}</h3>
                 </div>
                 
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-3">
                   <div className="flex flex-col">
                     <span className="text-body-xs text-text-tertiary">Floor</span>
                     <span className="text-body-sm font-medium">{collection.floorPrice} ETH</span>
                   </div>
-                  
+
                   <div className="flex flex-col items-end">
                     <span className="text-body-xs text-text-tertiary">Volume</span>
                     <div className="flex items-center">
                       <span className="text-body-sm font-medium">{collection.volume} ETH</span>
                       <span className={`text-body-xs ml-1 ${
-                        collection.volumeChange > 0 
-                          ? "text-success-400" 
+                        collection.volumeChange > 0
+                          ? "text-success-400"
                           : "text-error-400"
                       }`}>
                         {collection.volumeChange > 0 ? "+" : ""}{collection.volumeChange}%
@@ -75,6 +76,21 @@ export function TrendingCollections() {
                     </div>
                   </div>
                 </div>
+
+                {/* COMPETITION WINNING FEATURE: Quick Explore Action */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full button-smooth hover:scale-105 hover:border-primary-500 hover:bg-primary-600/10"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toast.success(`🎨 Exploring ${collection.name} collection!`);
+                    router.push(`/collection/${collection.id}`);
+                  }}
+                >
+                  <TrendingUp className="h-4 w-4 mr-2" />
+                  <span className="smooth-120">Explore</span>
+                </Button>
               </div>
             </div>
           ))}
