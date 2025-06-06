@@ -15,7 +15,7 @@ interface AnimatedProps extends HTMLAttributes<HTMLDivElement> {
 
 export const Animated = forwardRef<HTMLDivElement, AnimatedProps>(
   ({ children, animation = 'fadeIn', delay = 0, className, once = true, ...props }, ref) => {
-    const { ref: inViewRef, isInView } = useInView();
+    const { ref: inViewRef, isInView } = useInView<HTMLDivElement>();
 
     return (
       <div
@@ -48,7 +48,7 @@ interface StaggeredListProps extends HTMLAttributes<HTMLDivElement> {
 
 export const StaggeredList = forwardRef<HTMLDivElement, StaggeredListProps>(
   ({ children, staggerDelay = 100, animation = 'slideUp', className, ...props }, ref) => {
-    const { ref: listRef, visibleItems } = useStaggerAnimation(children.length, staggerDelay);
+    const { ref: listRef, visibleItems } = useStaggerAnimation<HTMLDivElement>(children.length, staggerDelay);
 
     return (
       <div ref={ref || listRef} className={cn('space-y-4', className)} {...props}>
