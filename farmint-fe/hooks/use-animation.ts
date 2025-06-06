@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import { createIntersectionObserver } from '@/lib/utils';
 
 // Lightweight animation hook for performance
-export function useInView(options?: IntersectionObserverInit) {
+export function useInView<T extends HTMLElement = HTMLElement>(options?: IntersectionObserverInit) {
   const [isInView, setIsInView] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<T>(null);
 
   useEffect(() => {
     const element = ref.current;
@@ -33,9 +33,9 @@ export function useInView(options?: IntersectionObserverInit) {
 }
 
 // Stagger animation hook for lists
-export function useStaggerAnimation(itemCount: number, delay = 100) {
+export function useStaggerAnimation<T extends HTMLElement = HTMLDivElement>(itemCount: number, delay = 100) {
   const [visibleItems, setVisibleItems] = useState(0);
-  const { ref, isInView } = useInView();
+  const { ref, isInView } = useInView<T>();
 
   useEffect(() => {
     if (isInView && visibleItems < itemCount) {
