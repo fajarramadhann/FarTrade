@@ -4,8 +4,8 @@ import { LiveAuctions } from "@/components/home/live-auctions";
 import { PageHeader } from "@/components/layout/page-header";
 import { MiniAppHeader } from "@/components/miniapp/miniapp-header";
 import { MiniAppLayout } from "@/components/miniapp/miniapp-layout";
-import { QuickStats } from "@/components/home/quick-stats";
 import { FarcasterFeatures } from "@/components/home/farcaster-features";
+import { SimpleStats } from "@/components/home/simple-stats";
 
 export default function Home() {
   return (
@@ -19,8 +19,8 @@ export default function Home() {
         <PageHeader title="Trade NFTs on Farcaster" showWalletButton />
 
         <div className="px-4 pb-6 flex flex-col gap-6">
-          {/* Quick Stats for engagement */}
-          <QuickStats />
+          {/* Simple stats - just what matters */}
+          <SimpleStats />
 
           {/* Featured NFT with enhanced design */}
           <Featured />
@@ -31,7 +31,7 @@ export default function Home() {
           {/* Trending collections */}
           <TrendingCollections />
 
-          {/* Live auctions */}
+          {/* Live auctions with direct actions */}
           <LiveAuctions />
         </div>
       </div>
