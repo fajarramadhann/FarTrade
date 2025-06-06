@@ -16,14 +16,14 @@ const navigationItems = [
     href: "/discover",
     icon: Search,
   },
+  // {
+  //   name: "Create",
+  //   href: "/create",
+  //   icon: Plus,
+  // },
   {
-    name: "Create",
-    href: "/create",
-    icon: Plus,
-  },
-  {
-    name: "Stats",
-    href: "/stats",
+    name: "Listings",
+    href: "/listings",
     icon: BarChart3,
   },
   {
